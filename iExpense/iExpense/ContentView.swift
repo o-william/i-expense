@@ -58,7 +58,7 @@ struct ContentView: View {
         NavigationView {
             //VStack {
                 List {
-                    // Since we've used the Identifiable protocol, we can do this (below)
+                    // basically copying and pasting here.
                     Section(header: Text("Personal Expenses")){
                         ForEach(expenses.items) { item in
                             if item.type == "Personal" {
@@ -70,6 +70,7 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .onDelete(perform: removeItems)
                     }
                     .listRowBackground(Color(red: 0.8789, green: 0.8516, blue: 0.7383, opacity: 0.45))
                     .foregroundColor(Color(red: 0.6133, green: 0.4648, blue: 0.3477, opacity: 1.0))
@@ -85,6 +86,7 @@ struct ContentView: View {
                                 }
                             }
                         }
+                        .onDelete(perform: removeItems)
                     }
                     .listRowBackground(Color(red: 0.8789, green: 0.8516, blue: 0.7383, opacity: 0.45))
                     .foregroundColor(Color(red: 0.6133, green: 0.4648, blue: 0.3477, opacity: 1.0))
