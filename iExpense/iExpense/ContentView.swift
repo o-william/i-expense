@@ -11,6 +11,7 @@
 // modify te expense amounts in ContentView to contain some styling depending on their value - expenses under $10 should have one style, expenses under $100 another, and expenses over $1000 a third style.
 // Try to split the expenses list into two sections: one for personal expenses and one for business expenses
 
+
 import SwiftUI
 
 
@@ -55,40 +56,57 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                // Since we've used the Identifiable protocol, we can do this (below)
-                ForEach(expenses.items) { item in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.type)
+            //VStack {
+                List {
+                    // Since we've used the Identifiable protocol, we can do this (below)
+                    Section(header: Text("Personal Expenses")){
+                        ForEach(expenses.items) { item in
+                            if item.type == "Personal" {
+                                HStack {
+                                    Text(item.name)
+                                        .font(.headline)
+                                    Spacer()
+                                    Text(item.amount, format: .currency(code: item.currency))
+                                }
+                            }
                         }
-                        
-                        Spacer()
-                        Text(item.amount, format: .currency(code: item.currency))
                     }
                     .listRowBackground(Color(red: 0.8789, green: 0.8516, blue: 0.7383, opacity: 0.45))
                     .foregroundColor(Color(red: 0.6133, green: 0.4648, blue: 0.3477, opacity: 1.0))
+                    
+                    Section(header: Text("Business Expenses")){
+                        ForEach(expenses.items) { item in
+                            if item.type == "Business" {
+                                HStack {
+                                    Text(item.name)
+                                        .font(.headline)
+                                    Spacer()
+                                    Text(item.amount, format: .currency(code: item.currency))
+                                }
+                            }
+                        }
+                    }
+                    .listRowBackground(Color(red: 0.8789, green: 0.8516, blue: 0.7383, opacity: 0.45))
+                    .foregroundColor(Color(red: 0.6133, green: 0.4648, blue: 0.3477, opacity: 1.0))
+//                    .onDelete(perform: removeItems)
                 }
-                .onDelete(perform: removeItems)
-            }
-            .padding()
-            .listStyle(PlainListStyle())
-            .background(Color(red: 0.9492, green: 0.9102, blue: 0.8828, opacity: 1.0))
-
-            //.padding(.horizontal)
-            .navigationTitle("iExpense")
-            .sheet(isPresented: $showingAddExpense) {
-                AddView(expenses: expenses)
-            }
-            .toolbar {
-                Button {
-                    showingAddExpense = true
-                } label: {
-                    Image(systemName: "plus")
+                .padding()
+                .listStyle(PlainListStyle())
+                .background(Color(red: 0.9492, green: 0.9102, blue: 0.8828, opacity: 1.0))
+                
+                //.padding(.horizontal)
+                .navigationTitle("iExpense")
+                .sheet(isPresented: $showingAddExpense) {
+                    AddView(expenses: expenses)
                 }
-            }
+                .toolbar {
+                    Button {
+                        showingAddExpense = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            //}
             // Navigation View Closing brace directly below
         }
     }
